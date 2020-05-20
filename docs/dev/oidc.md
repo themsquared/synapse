@@ -130,27 +130,25 @@ oidc_config:
        display_name_template: '{{ user.name }}'
 ```
 
-### Google
+### [Google](https://developers.google.com/identity/protocols/oauth2/openid-connect)
 
-1. Setup a project in the Google API Console
-2. Obtain the OAuth 2.0 credentials (see <https://developers.google.com/identity/protocols/oauth2/openid-connect>)
-3. Add this Authorized redirect URI: `[synapse base url]/_synapse/oidc/callback`
-
-```yaml
-oidc_config:
-   enabled: true
-   issuer: "https://accounts.google.com/"
-   discover: true
-   client_id: "your-client-id" # TO BE FILLED
-   client_secret: "your-client-secret" # TO BE FILLED
-   scopes:
-     - openid
-     - profile
-   user_mapping_provider:
-     config:
-       localpart_template: '{{ user.given_name|lower }}'
-       display_name_template: '{{ user.name }}'
-```
+1. Set up a project in the Google API Console (see https://developers.google.com/identity/protocols/oauth2/openid-connect#appsetup)
+2. add an "OAuth Client ID" for a Web Application under "Credentials" 
+3. Copy the Client ID and Client Secret, and add the following to your synapse config:
+   ```yaml
+   oidc_config:
+     enabled: true
+     issuer: "https://accounts.google.com/"
+     discover: true
+     client_id: "your-client-id" # TO BE FILLED
+     client_secret: "your-client-secret" # TO BE FILLED
+     scopes: ["openid", "profile"]
+     user_mapping_provider:
+       config:
+         localpart_template: '{{ user.given_name|lower }}'
+         display_name_template: '{{ user.name }}'
+   ```
+4. Back in the Google console, add this Authorized redirect URI: `[synapse public baseurl]/_synapse/oidc/callback`
 
 ### Twitch
 
